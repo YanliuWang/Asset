@@ -19,4 +19,8 @@ public class User {
     @Getter
     @Setter
     private boolean isAdmin;
+
+    @Getter
+    @Setter
+    private String email;
 }
