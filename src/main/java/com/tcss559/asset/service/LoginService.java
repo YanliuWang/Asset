@@ -1,7 +1,7 @@
 package com.tcss559.asset.service;
 
+import com.tcss559.asset.models.User;
 import com.tcss559.asset.models.dto.ResponseDto;
-import com.tcss559.asset.models.param.UserParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,18 +16,18 @@ public interface LoginService {
      *
      * @param request
      * @param response
-     * @param userParam
+     * @param user
      * @return
      */
-    ResponseDto login(HttpServletRequest request, HttpServletResponse response, UserParam userParam);
+    ResponseDto login(HttpServletRequest request, HttpServletResponse response, User user);
 
     /**
      * register
      *
-     * @param userParam
+     * @param user
      * @return
      */
-    ResponseDto register(UserParam userParam);
+    ResponseDto register(User user);
 
     /**
      * logout
