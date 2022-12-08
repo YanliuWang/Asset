@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: admin
+    url: jdbc:mysql://tcss559db.cmbibvyvdwfh.us-east-2.rds.amazonaws.com:3306/tcss559
+    password: wyl199825
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+asset:
+  jwt:
+    secret: abc123456
+    expire:  5
+    cache-expire: 10

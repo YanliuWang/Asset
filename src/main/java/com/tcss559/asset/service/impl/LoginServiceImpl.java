@@ -2,6 +2,8 @@ package com.tcss559.asset.service.impl;
 
 
 import com.tcss559.asset.dao.UserDAO;
+import com.tcss559.asset.models.LoginForm;
+import com.tcss559.asset.models.Response;
 import com.tcss559.asset.models.User;
 import com.tcss559.asset.models.dto.ResponseDto;
 import com.tcss559.asset.service.LoginService;
@@ -21,10 +23,23 @@ public class LoginServiceImpl implements LoginService {
     private UserDAO userDao;
 
     @Override
-    public ResponseDto login(HttpServletRequest request, HttpServletResponse response, User user) {
-        User user1 = userDao.selectOne(1);
+    public Response login(LoginForm form) {
+        String userName = form.getUserName();
 
-        return ResponseDto.success(user1);
+        User selectedUser = userDao.select(userName);
+
+        if (selectedUser == null) {
+            return Response.error("user does not exist!");
+        }
+
+        String password = form.getPassword();
+
+        if (!selectedUser.getPassword().equals(password)) {
+            return Response.error("username or password is wrong!");
+        }
+
+
+        return Response.ok();
 
     }
 

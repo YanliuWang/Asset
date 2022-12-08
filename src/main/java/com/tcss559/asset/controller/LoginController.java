@@ -1,16 +1,17 @@
 package com.tcss559.asset.controller;
 
+import com.tcss559.asset.models.LoginForm;
+import com.tcss559.asset.models.Response;
 import com.tcss559.asset.models.User;
 import com.tcss559.asset.models.dto.ResponseDto;
 import com.tcss559.asset.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * @author yanliu
@@ -18,16 +19,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/")
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
-    @ResponseBody
-    @RequestMapping("/login")
-    public ResponseDto login(HttpServletRequest request, HttpServletResponse response, User user) {
-        return loginService.login(request, response, user);
+    @PostMapping("/login")
+    public Response login(@Valid @RequestBody LoginForm form) {
+        return loginService.login(form);
     }
 
     /**
