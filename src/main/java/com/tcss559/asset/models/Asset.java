@@ -6,15 +6,15 @@ import lombok.Setter;
 public class Asset {
     @Getter
     @Setter
-    private int assetId;
+    private long assetId;
 
     @Getter
     @Setter
-    private int assetName;
+    private String assetName;
 
     @Getter
     @Setter
-    private int RFIDid;
+    private String rfidId;
 
     @Getter
     @Setter
