@@ -2,7 +2,7 @@ package com.tcss559.asset.models;
 
 import lombok.Getter;
 import lombok.Setter;
-
+qq
 public class Asset {
     @Getter
     @Setter
