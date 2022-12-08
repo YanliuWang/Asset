@@ -1,5 +1,7 @@
 package com.tcss559.asset.service;
 
+import com.tcss559.asset.models.LoginForm;
+import com.tcss559.asset.models.Response;
 import com.tcss559.asset.models.User;
 import com.tcss559.asset.models.dto.ResponseDto;
 
@@ -19,7 +21,7 @@ public interface LoginService {
      * @param user
      * @return
      */
-    ResponseDto login(HttpServletRequest request, HttpServletResponse response, User user);
+    Response login(LoginForm form);
 
     /**
      * register
