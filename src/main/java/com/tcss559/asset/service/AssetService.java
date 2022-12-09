@@ -3,12 +3,18 @@ package com.tcss559.asset.service;
 import com.tcss559.asset.dao.AssetDAO;
 import com.tcss559.asset.models.Asset;
 import com.tcss559.asset.models.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.CreateTopicRequest;
+import software.amazon.awssdk.services.sns.model.CreateTopicResponse;
+import software.amazon.awssdk.services.sns.model.SnsException;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -16,11 +22,15 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service("AssetService")
 public class AssetService {
     @Resource
     private AssetDAO assetDao;
+
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     public Asset lookUpAsset(String RFIDid) {
         Asset asset = assetDao.selectByRFIDid(RFIDid);
@@ -66,6 +76,8 @@ public class AssetService {
             asset.setCountry(locationJson.getString("countryCode"));
             int isCreated = assetDao.insert(asset);
             if (isCreated == 1) {
+                Asset newAsset = assetDao.selectByRFIDid(asset.getRfidId());
+                subscriptionService.createTopic(newAsset.getAssetId());
                 return Response.success();
             }
         } catch (JSONException e) {
@@ -166,7 +178,7 @@ public class AssetService {
         return jo.toString();
     }
 
-    public Response updateLocation(Asset newAsset) {
+    public Response updateLocation(Map<String, String> headers, Asset newAsset) {
         Asset asset = assetDao.selectByRFIDid(newAsset.getRfidId());
         if (newAsset.getCity() != null) {
             asset.setCity(newAsset.getCity());
@@ -180,8 +192,24 @@ public class AssetService {
 
         int isUpdated = assetDao.update(asset);
         if (isUpdated == 1) {
+            String message = String.format("%s(RFID: %s) is now transported to %s, %s, %s.", asset.getAssetName(),
+                    asset.getRfidId(), asset.getCity(), asset.getState(), asset.getCountry());
+            subscriptionService.publish(getUserId(headers), asset.getAssetId(), message);
             return Response.success();
+        } else {
+            return Response.error("Asset location update failed. Check whether the fields are valid.");
         }
-        return Response.error("Asset location update failed. Check whether the fields are valid.");
     }
+
+    private int getUserId(Map<String, String> headers) {
+        String token = headers.getOrDefault("token", null);
+        if (token == null) return -1;
+        String result[] = token.split("\\s*-\\s*");
+        String userId = result[result.length - 1];
+
+        if (userId == null) return -1;
+        return Integer.parseInt(userId);
+    }
+
+
 }

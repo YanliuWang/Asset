@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcss559.asset.dao.SubscriptionDAO">
+    <insert id="addNewSubscription" parameterType="map">
+        INSERT INTO Subscriptions (userId, assetId) VALUES (#{userId}, #{assetId})
+    </insert>
+    <insert id="storeArn" parameterType="map">
+        INSERT INTO AWS_ARN (assetId, topicARN) VALUES (#{assetId}, #{arn})
+    </insert>
+    <select id="getEmail"  parameterType="int" resultType="String">
+        SELECT email from Users where userId=#{userId}
+    </select>
+    <select id="getARN"  parameterType="long" resultType="String">
+        SELECT topicARN from AWS_ARN where assetId=#{assetId}
+    </select>
+    <!-- match SQL results to model objects -->
+    <resultMap id="subscriptionMapBase" type="com.tcss559.asset.models.Subscription">
+        <id column="userId" property="userId" />
+        <result column="assetId" property="assetId" />
+    </resultMap>
+</mapper>

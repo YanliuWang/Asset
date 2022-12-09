@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.Map;
+
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
@@ -28,7 +30,7 @@ public class AssetTrackingController {
 
     @ResponseBody
     @RequestMapping(value = "/", method = PUT)
-    public Response updateLocation(@Valid @RequestBody Asset asset) {
-        return assetService.updateLocation(asset);
+    public Response updateLocation(@RequestHeader Map<String, String> headers, @Valid @RequestBody Asset asset) {
+        return assetService.updateLocation(headers, asset);
     }
 }
