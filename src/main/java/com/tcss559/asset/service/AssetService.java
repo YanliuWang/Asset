@@ -1,5 +1,6 @@
 package com.tcss559.asset.service;
 
+import com.tcss559.asset.AssetApplication;
 import com.tcss559.asset.dao.AssetDAO;
 import com.tcss559.asset.models.Asset;
 import com.tcss559.asset.models.dto.ResponseDto;
@@ -150,5 +151,38 @@ public class AssetService {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    public String getLocation(String rfidId) {
+        Asset asset = assetDao.selectByRFIDid(rfidId);
+        JSONObject jo = new JSONObject();
+        try{
+            jo.put("rfidId", rfidId);
+            jo.put("city", asset.getCity());
+            jo.put("state", asset.getState());
+            jo.put("country", asset.getCountry());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jo.toString();
+    }
+
+    public ResponseDto updateLocation(Asset newAsset) {
+        Asset asset = assetDao.selectByRFIDid(newAsset.getRfidId());
+        if (newAsset.getCity() != null) {
+            asset.setCity(newAsset.getCity());
+        }
+        if (newAsset.getState() != null) {
+            asset.setState(newAsset.getState());
+        }
+        if (newAsset.getCountry() != null) {
+            asset.setCountry(newAsset.getCountry());
+        }
+
+        int isUpdated = assetDao.update(asset);
+        if (isUpdated == 1) {
+            return ResponseDto.success();
+        }
+        return ResponseDto.error("Asset location update failed. Check whether the fields are valid.");
     }
 }
