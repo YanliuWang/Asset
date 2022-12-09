@@ -1,20 +1,19 @@
 package com.tcss559.asset.controller;
 
 import com.tcss559.asset.models.Asset;
+import com.tcss559.asset.models.dto.ResponseDto;
 import com.tcss559.asset.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
 @CrossOrigin
@@ -26,14 +25,49 @@ public class AssetController {
 
     @ResponseBody
     @RequestMapping(value = "/{RFIDid}", method = GET)
-    public Asset lookUpAsset(HttpServletRequest request, HttpServletResponse response, @PathVariable String RFIDid) {
-        return assetService.lookUpAsset(request, response, RFIDid);
+    public Asset lookUpAsset(@PathVariable String RFIDid) {
+        return assetService.lookUpAsset(RFIDid);
     }
 
     @ResponseBody
     @RequestMapping(value = "/category/{value}", method = GET)
-    public List<Asset> lookUpAssetByCategory(HttpServletRequest request, HttpServletResponse response, @PathVariable String value) {
-        return assetService.lookUpAssetByCategory(request, response, value);
+    public List<Asset> lookUpAssetByCategory(@PathVariable String value) {
+        return assetService.lookUpAssetByCategory(value);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/name/{value}", method = GET)
+    public List<Asset> lookUpAssetByName(@PathVariable String value) {
+        return assetService.lookUpAssetByName(value);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/city/{value}", method = GET)
+    public List<Asset> lookUpAssetByCity(@PathVariable String value) {
+        return assetService.lookUpAssetByCity(value);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/country/{value}", method = GET)
+    public List<Asset> lookUpAssetByCountry(@PathVariable String value) {
+        return assetService.lookUpAssetByCountry(value);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/", method = POST)
+    public ResponseDto createAsset(@Valid @RequestBody Asset asset) {
+        return assetService.createAsset(asset);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/", method = PUT)
+    public ResponseDto updateAsset(@Valid @RequestBody Asset asset) {
+        return assetService.updateAsset(asset);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{rfidId}", method = DELETE)
+    public ResponseDto deleteAsset(@PathVariable String rfidId) {
+        return assetService.deleteAsset(rfidId);
+    }
 }

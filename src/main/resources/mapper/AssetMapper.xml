@@ -17,16 +17,16 @@
     select <include refid="sqlBase" /> from Assets where country = #{country}
 </select>
 <insert id="insert" parameterType="com.tcss559.asset.models.Asset">
-    insert into Assets (<include refid="sqlBase" />) values (#{assetId},#{assetName},#{rfidId},#{value},#{location},#{city},#{state},#{country},#{category})
+    insert into Assets (<include refid="sqlBase" />) values (#{assetId},#{assetName},#{rfidId},#{value},#{city},#{state},#{country},#{category})
 </insert>
-<delete id="delete" parameterType="int">
-    delete from Assets where assetId=#{assetId}
+<delete id="delete" parameterType="String">
+    delete from Assets where rfidId=#{rfidId}
 </delete>
 <update id="update" parameterType="com.tcss559.asset.models.Asset">
-    update Assets (<include refid="sqlBase" />) values (#{assetId},#{assetName},#{rfidId},#{value},#{location},#{city},#{state},#{country},#{category})
+    update Assets set assetName=#{assetName},value=#{value},city=#{city},state=#{state},country=#{country},category=#{category} where rfidId = #{rfidId}
 </update>
 <sql id="sqlBase">
-    assetId,assetName,rfidId,value,location,city,state,country,category
+    assetId,assetName,rfidId,value,city,state,country,category
 </sql>
 <!-- match SQL results to model objects -->
 <resultMap id="resultMapBase" type="com.tcss559.asset.models.Asset">
@@ -34,7 +34,6 @@
     <result column="assetName" property="assetName" />
     <result column="rfidId" property="rfidId" />
     <result column="value" property="value" />
-    <result column="location" property="location" />
     <result column="city" property="city" />
     <result column="state" property="state" />
     <result column="country" property="country" />

@@ -21,5 +21,5 @@ public interface AssetDAO {
 
     public int update(Asset asset);
 
-    public int delete(int RFIDid);
+    public int delete(String rfidId);
 }

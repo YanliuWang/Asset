@@ -22,15 +22,15 @@ public class Asset {
 
     @Getter
     @Setter
-    private String location;
-
-    @Getter
-    @Setter
     private String city;
 
     @Getter
     @Setter
     private String state;
+
+    @Getter
+    @Setter
+    private String ip;
 
     @Getter
     @Setter
