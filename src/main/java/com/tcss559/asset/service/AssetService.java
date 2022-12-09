@@ -5,14 +5,16 @@ import com.tcss559.asset.models.Asset;
 import com.tcss559.asset.models.dto.ResponseDto;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("AssetService")
@@ -58,7 +60,7 @@ public class AssetService {
             JSONObject resultJson = new JSONObject(result.getBody());
             JSONObject locationJson = resultJson.getJSONObject("locationData");
             String cityName = locationJson.getString("cityName");
-            String[] cityRaw = cityName.split(",");
+            String[] cityRaw = cityName.split("\\s*,\\s*");
             asset.setCity(cityRaw[0]);
             asset.setState(cityRaw[1]);
             asset.setCountry(locationJson.getString("countryCode"));
@@ -106,6 +108,47 @@ public class AssetService {
             return ResponseDto.success();
         } else {
             return ResponseDto.error("Asset deletion failed. Check whether rfidId exists.");
+        }
+    }
+
+    public ResponseEntity<InputStreamResource> generateReport(String fieldChoice, String choiceValue) {
+        try {
+            File f = new File("report.txt");
+            FileWriter fWriter = new FileWriter(f);
+            fWriter.write("Asset Management System Report\n\n");
+            fWriter.write(String.format("The assets satisfying %s = %s:\n", fieldChoice, choiceValue));
+
+            List<Asset> assets = new ArrayList<>();
+            if (fieldChoice.equals("category")) {
+                assets = assetDao.selectByCategory(choiceValue);
+            } else if (fieldChoice.equals("country")) {
+                assets = assetDao.selectByCountry(choiceValue);
+            } else if (fieldChoice.equals("city")) {
+                assets = assetDao.selectByCity(choiceValue);
+            } else if (fieldChoice.equals("name")) {
+                assets = assetDao.selectByName(choiceValue);
+            }
+
+            double valueSum = 0d;
+            for (Asset a: assets) {
+                fWriter.write(a.toString() + "\n");
+                valueSum += a.getValue();
+            }
+
+            fWriter.write(String.format("\nThe asset value sum is $%.2f.", valueSum));
+            fWriter.close();
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(f));
+
+            HttpHeaders header = new HttpHeaders();
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report.txt");
+            return ResponseEntity.ok()
+                    .headers(header)
+                    .contentLength(f.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
