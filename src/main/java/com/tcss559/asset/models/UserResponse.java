@@ -1,30 +1,30 @@
 package com.tcss559.asset.models;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-public class User {
-    @Getter
-    @Setter
+import java.io.Serializable;
+
+/**
+ * @author yanliu
+ * @create 2022-12-08-10:48 PM
+ */
+
+@Data
+public class UserResponse implements Serializable {
+
     private int userId;
 
-    @Getter
-    @Setter
     private String userName;
 
-    @Getter
-    @Setter
     private String password;
 
-    @Getter
-    @Setter
     private String role;
 
-    @Getter
-    @Setter
     private String salt;
 
-    @Getter
-    @Setter
     private String email;
+
+    private String token;
 }

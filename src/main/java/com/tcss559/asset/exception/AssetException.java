@@ -1,4 +1,4 @@
-package com.tcss559.asset.Exception;
+package com.tcss559.asset.exception;
 
 import lombok.Data;
 

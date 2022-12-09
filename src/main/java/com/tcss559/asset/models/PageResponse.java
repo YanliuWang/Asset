@@ -1,4 +1,4 @@
-package com.tcss559.asset.models.dto;
+package com.tcss559.asset.models;
 
 
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
  * PageResponseDto
  */
 @Data
-public class PageResponseDto {
+public class PageResponse {
 
     public static final String DEFAULT_SUCCESS_MESSAGE = "success";
 
@@ -46,7 +46,7 @@ public class PageResponseDto {
 
 
 
-    public PageResponseDto(Boolean success, Integer code, String message, Object data, long count) {
+    public PageResponse(Boolean success, Integer code, String message, Object data, long count) {
         this.success = success;
         this.code = code;
         this.message = message;
@@ -54,17 +54,17 @@ public class PageResponseDto {
         this.count = count;
     }
 
-    public static PageResponseDto success(Object t, long count) {
-        return new PageResponseDto(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE, t, count);
+    public static PageResponse success(Object t, long count) {
+        return new PageResponse(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE, t, count);
     }
 
-    public static PageResponseDto success() {
-        return new PageResponseDto(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE, null, 0);
+    public static PageResponse success() {
+        return new PageResponse(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE, null, 0);
     }
 
 
-    public static PageResponseDto error(String message) {
-        return new PageResponseDto(false, DEFAULT_ERROR_CODE, message, null, 0);
+    public static PageResponse error(String message) {
+        return new PageResponse(false, DEFAULT_ERROR_CODE, message, null, 0);
     }
 
 

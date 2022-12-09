@@ -2,16 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tcss559.asset.dao.UserDAO">
     <select id="selectOne" resultMap="resultMapBase" parameterType="int">
-        select userId, userName, password, isAdmin, email from Users where userId = #{userId}
+        select userId, userName, password, email, sale, role from Users where userId = #{userId}
     </select>
+
+    <select id="selectUser" resultMap="resultMapBase" parameterType="String">
+        select userId, userName, password, email, salt, role from Users where userName = #{userName}
+    </select>
+
     <insert id="insert" parameterType="com.tcss559.asset.models.User">
-        insert into Users (userName,password,isAdmin) values (#{userName},#{password},#{isAdmin},#{email})
+        insert into Users (userName, password, email, salt, role) values (#{userName},#{password},#{email},#{salt},#{role})
     </insert>
     <!-- match SQL results to model objects -->
     <resultMap id="resultMapBase" type="com.tcss559.asset.models.User">
         <id column="userId" property="userId" />
         <result column="userName" property="userName" />
         <result column="password" property="password" />
-        <result column="isAdmin" property="isAdmin" />
+        <result column="email" property="email" />
+        <result column="role" property="role" />
+        <result column="salt" property="salt" />
     </resultMap>
 </mapper>

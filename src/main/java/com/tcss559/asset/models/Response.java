@@ -1,57 +1,66 @@
 package com.tcss559.asset.models;
 
-import lombok.Data;
-import org.apache.http.HttpStatus;
 
-import java.util.HashMap;
-import java.util.Map;
+import lombok.Data;
 
 /**
- * @author yanliu
- * @create 2022-12-08-12:24 AM
+ * ResponseDto
  */
-
 @Data
-public class Response extends HashMap<String, Object> {
+public class Response {
+
+    public static final String DEFAULT_SUCCESS_MESSAGE = "success";
+
+    public static final String DEFAULT_ERROR_MESSAGE = "something error";
+
+    public static final String KEY_MISS_OR_NOT_CORRECT = "Token is Required";
+
+    public static final Integer DEFAULT_SUCCESS_CODE = 200;
+
+    public static final Integer DEFAULT_ERROR_CODE = 500;
+
+    /**
+     * success
+     */
+    private Boolean success;
+
+    /**
+     * code
+     */
+    private Integer code;
+
+    /**
+     * message
+     */
+    private String message;
+
+    /**
+     * data
+     */
+    private Object data;
+
     public Response() {
-        put("code", HttpStatus.SC_OK);
-        put("msg", "success");
     }
 
-    public static Response error() {
-        return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "未知异常，请联系管理员");
+    public Response(Boolean success, Integer code, String message, Object data) {
+        this.success = success;
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 
-    public static Response error(String msg) {
-        return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
+    public static Response success(Object t) {
+        return new Response(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE, t);
     }
 
-    public static Response error(int code, String msg) {
-        Response r = new Response();
-        r.put("code", code);
-        r.put("msg", msg);
-        return r;
+    public static Response success() {
+        return new Response(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE, null);
     }
 
-    public static Response ok(String msg) {
-        Response r = new Response();
-        r.put("msg", msg);
-        return r;
+
+    public static Response error(String message) {
+        return new Response(false, DEFAULT_ERROR_CODE, message, null);
     }
 
-    public static Response ok(Map<String, Object> map) {
-        Response r = new Response();
-        r.putAll(map);
-        return r;
-    }
 
-    public static Response ok() {
-        return new Response();
-    }
-
-    public Response put(String key, Object value) {
-        super.put(key, value);
-        return this;
-    }
 }
-

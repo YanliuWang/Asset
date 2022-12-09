@@ -5,11 +5,21 @@ spring:
     url: jdbc:mysql://tcss559db.cmbibvyvdwfh.us-east-2.rds.amazonaws.com:3306/tcss559
     password: wyl199825
 
+  redis:
+    database: 1
+    host: 3.17.60.248
+    port: 6379
+    password: wyl199825
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 asset:
   jwt:
+    #??
     secret: abc123456
+    #?????????
     expire:  5
+    #??????????
     cache-expire: 10
+
