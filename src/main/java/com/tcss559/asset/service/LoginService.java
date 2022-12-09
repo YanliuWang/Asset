@@ -3,6 +3,7 @@ package com.tcss559.asset.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tcss559.asset.dao.UserDAO;
+import com.tcss559.asset.enums.RoleEnums;
 import com.tcss559.asset.models.User;
 import com.tcss559.asset.models.UserResponse;
 import com.tcss559.asset.models.Response;
@@ -81,8 +82,14 @@ public class LoginService {
         String salt = userUtil.getRandomSalt(5);
         String password = userUtil.md5(user.getPassword(), salt);
 
+        registeredUser.setSalt(salt);
+        registeredUser.setRole(RoleEnums.NORMAL.getCode());
+        registeredUser.setPassword(password);
 
-        return null;
+        userDao.insert(registeredUser);
+
+
+        return Response.success();
     }
 
     /**
@@ -92,6 +99,9 @@ public class LoginService {
      * @return
      */
     public Response logout(HttpServletRequest request) {
-        return null;
+        String token = request.getHeader("Authorization");
+        redisUtil.remove(token);
+
+        return Response.success();
     }
 }

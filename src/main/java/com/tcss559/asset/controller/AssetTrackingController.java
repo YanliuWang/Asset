@@ -1,10 +1,9 @@
 package com.tcss559.asset.controller;
 
 import com.tcss559.asset.models.Asset;
-import com.tcss559.asset.models.dto.ResponseDto;
+import com.tcss559.asset.models.Response;
 import com.tcss559.asset.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +28,7 @@ public class AssetTrackingController {
 
     @ResponseBody
     @RequestMapping(value = "/", method = PUT)
-    public ResponseDto updateLocation(@Valid @RequestBody Asset asset) {
+    public Response updateLocation(@Valid @RequestBody Asset asset) {
         return assetService.updateLocation(asset);
     }
 }

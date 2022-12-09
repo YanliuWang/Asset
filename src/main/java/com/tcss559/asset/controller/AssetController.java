@@ -1,17 +1,14 @@
 package com.tcss559.asset.controller;
 
 import com.tcss559.asset.models.Asset;
-import com.tcss559.asset.models.dto.ResponseDto;
+import com.tcss559.asset.models.Response;
 import com.tcss559.asset.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import java.io.FileInputStream;
@@ -60,19 +57,19 @@ public class AssetController {
 
     @ResponseBody
     @RequestMapping(value = "/", method = POST)
-    public ResponseDto createAsset(@Valid @RequestBody Asset asset) {
+    public Response createAsset(@Valid @RequestBody Asset asset) {
         return assetService.createAsset(asset);
     }
 
     @ResponseBody
     @RequestMapping(value = "/", method = PUT)
-    public ResponseDto updateAsset(@Valid @RequestBody Asset asset) {
+    public Response updateAsset(@Valid @RequestBody Asset asset) {
         return assetService.updateAsset(asset);
     }
 
     @ResponseBody
     @RequestMapping(value = "/{rfidId}", method = DELETE)
-    public ResponseDto deleteAsset(@PathVariable String rfidId) {
+    public Response deleteAsset(@PathVariable String rfidId) {
         return assetService.deleteAsset(rfidId);
     }
 

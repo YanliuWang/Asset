@@ -1,9 +1,8 @@
 package com.tcss559.asset.service;
 
-import com.tcss559.asset.AssetApplication;
 import com.tcss559.asset.dao.AssetDAO;
 import com.tcss559.asset.models.Asset;
-import com.tcss559.asset.models.dto.ResponseDto;
+import com.tcss559.asset.models.Response;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.InputStreamResource;
@@ -48,7 +47,7 @@ public class AssetService {
         return assets;
     }
 
-    public ResponseDto createAsset(Asset asset) {
+    public Response createAsset(Asset asset) {
         String ip = asset.getIp();
         String ipUri = String.format("https://ep.api.getfastah.com/whereis/v1/json/%s", ip);
         RestTemplate restTemplate = new RestTemplate();
@@ -67,15 +66,15 @@ public class AssetService {
             asset.setCountry(locationJson.getString("countryCode"));
             int isCreated = assetDao.insert(asset);
             if (isCreated == 1) {
-                return ResponseDto.success();
+                return Response.success();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return ResponseDto.error("Asset creation failed. Check whether the fields are valid.");
+        return Response.error("Asset creation failed. Check whether the fields are valid.");
     }
 
-    public ResponseDto updateAsset(Asset newAsset) {
+    public Response updateAsset(Asset newAsset) {
         Asset oldAsset = assetDao.selectByRFIDid(newAsset.getRfidId());
         if (newAsset.getAssetName() == null) {
             newAsset.setAssetName(oldAsset.getAssetName());
@@ -98,17 +97,17 @@ public class AssetService {
 
         int isUpdated = assetDao.update(newAsset);
         if (isUpdated == 1) {
-            return ResponseDto.success();
+            return Response.success();
         }
-        return ResponseDto.error("Asset update failed. Check whether the fields are valid.");
+        return Response.error("Asset update failed. Check whether the fields are valid.");
     }
 
-    public ResponseDto deleteAsset(String rfidId) {
+    public Response deleteAsset(String rfidId) {
         int result = assetDao.delete(rfidId);
         if (result == 1) {
-            return ResponseDto.success();
+            return Response.success();
         } else {
-            return ResponseDto.error("Asset deletion failed. Check whether rfidId exists.");
+            return Response.error("Asset deletion failed. Check whether rfidId exists.");
         }
     }
 
@@ -167,7 +166,7 @@ public class AssetService {
         return jo.toString();
     }
 
-    public ResponseDto updateLocation(Asset newAsset) {
+    public Response updateLocation(Asset newAsset) {
         Asset asset = assetDao.selectByRFIDid(newAsset.getRfidId());
         if (newAsset.getCity() != null) {
             asset.setCity(newAsset.getCity());
@@ -181,8 +180,8 @@ public class AssetService {
 
         int isUpdated = assetDao.update(asset);
         if (isUpdated == 1) {
-            return ResponseDto.success();
+            return Response.success();
         }
-        return ResponseDto.error("Asset location update failed. Check whether the fields are valid.");
+        return Response.error("Asset location update failed. Check whether the fields are valid.");
     }
 }
