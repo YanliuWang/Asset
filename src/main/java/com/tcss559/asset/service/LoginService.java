@@ -40,7 +40,7 @@ public class LoginService {
             return Response.error("user does not exist!");
         }
 
-        String salt = user.getSalt();
+        String salt = selectedUser.getSalt();
         String password = userUtil.md5(user.getPassword(), salt);
 
         String realPass = selectedUser.getPassword();
