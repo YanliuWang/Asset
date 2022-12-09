@@ -48,7 +48,7 @@ public class LoginService {
         }
 
 
-        String token = "TCSS559 " + userUtil.getRandomSalt(16);
+        String token = "TCSS559" + "-" + userUtil.getRandomSalt(16) + "-" + user.getUserId();
         redisUtil.set(token, JSONObject.toJSONString(user), 24 * 60 * 60L);
         response.setHeader("Authorization", token);
 
@@ -67,6 +67,21 @@ public class LoginService {
      * @return
      */
     public Response register(User user) {
+        String userName = user.getUserName();
+
+        User selectedUser = userDao.selectUser(userName);
+
+        if (selectedUser != null) {
+            return Response.error("user already exists!");
+        }
+
+        User registeredUser = new User();
+        BeanUtils.copyProperties(user, registeredUser, "password");
+
+        String salt = userUtil.getRandomSalt(5);
+        String password = userUtil.md5(user.getPassword(), salt);
+
+
         return null;
     }
 
