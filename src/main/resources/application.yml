@@ -7,7 +7,7 @@ spring:
 
   redis:
     database: 1
-    host: 18.191.117.149
+    host: 127.0.0.1
     port: 6379
     password: wyl199825
 
