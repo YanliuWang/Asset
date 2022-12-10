@@ -85,6 +85,7 @@ public class LoginService {
         registeredUser.setSalt(salt);
         registeredUser.setRole(RoleEnums.NORMAL.getCode());
         registeredUser.setPassword(password);
+        registeredUser.setEmail(user.getEmail());
 
         userDao.insert(registeredUser);
 
