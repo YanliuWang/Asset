@@ -3,6 +3,11 @@ package com.tcss559.asset.models;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @Description: asset model
+ * @Author: Xiaojie Li
+ * @Date: 2022/12/9
+ */
 public class Asset {
     @Getter
     @Setter

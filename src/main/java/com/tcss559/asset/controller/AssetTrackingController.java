@@ -14,6 +14,11 @@ import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+/**
+ * @Description: Asset Tracking Controller
+ * @Author: Xiaojie Li
+ * @Date: 2022/12/9
+ */
 @Controller
 @CrossOrigin
 @RequestMapping("/tracking/location")
@@ -22,12 +27,25 @@ public class AssetTrackingController {
     @Autowired
     private AssetService assetService;
 
+    /**
+     * get location
+     *
+     * @param rfidId
+     * @return String
+     */
     @ResponseBody
     @RequestMapping(value = "/{rfidId}", produces = MediaType.APPLICATION_JSON_VALUE, method = GET)
     public String getLocation(@PathVariable String rfidId) {
         return assetService.getLocation(rfidId);
     }
 
+    /**
+     * update location
+     *
+     * @param headers
+     * @param asset
+     * @return Response
+     */
     @ResponseBody
     @RequestMapping(value = "/", method = PUT)
     public Response updateLocation(@RequestHeader Map<String, String> headers, @Valid @RequestBody Asset asset) {

@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Description: asset service
+ * @Author: Xiaojie Li
+ * @Date: 2022/12/9
+ */
 @Service("AssetService")
 public class AssetService {
     @Resource
@@ -32,31 +37,67 @@ public class AssetService {
     @Autowired
     private SubscriptionService subscriptionService;
 
+    /**
+     * look up asset
+     *
+     * @param RFIDid
+     * @return Asset
+     */
     public Asset lookUpAsset(String RFIDid) {
         Asset asset = assetDao.selectByRFIDid(RFIDid);
         return asset;
     }
 
+    /**
+     * look up asset by category
+     *
+     * @param value
+     * @return List<Asset>
+     */
     public List<Asset> lookUpAssetByCategory(String value) {
         List<Asset> assets = assetDao.selectByCategory(value);
         return assets;
     }
 
+    /**
+     * look up asset by name
+     *
+     * @param value
+     * @return List<Asset>
+     */
     public List<Asset> lookUpAssetByName(String value) {
         List<Asset> assets = assetDao.selectByName(value);
         return assets;
     }
 
+    /**
+     * look up asset by city
+     *
+     * @param value
+     * @return List<Asset>
+     */
     public List<Asset> lookUpAssetByCity(String value) {
         List<Asset> assets = assetDao.selectByCity(value);
         return assets;
     }
 
+    /**
+     * look up asset by country
+     *
+     * @param value
+     * @return List<Asset>
+     */
     public List<Asset> lookUpAssetByCountry(String value) {
         List<Asset> assets = assetDao.selectByCountry(value);
         return assets;
     }
 
+    /**
+     * create asset
+     *
+     * @param  asset
+     * @return Response
+     */
     public Response createAsset(Asset asset) {
         String ip = asset.getIp();
         String ipUri = String.format("https://ep.api.getfastah.com/whereis/v1/json/%s", ip);
@@ -86,6 +127,12 @@ public class AssetService {
         return Response.error("Asset creation failed. Check whether the fields are valid.");
     }
 
+    /**
+     * update asset
+     *
+     * @param  asset
+     * @return Response
+     */
     public Response updateAsset(Asset newAsset) {
         Asset oldAsset = assetDao.selectByRFIDid(newAsset.getRfidId());
         if (newAsset.getAssetName() == null) {
@@ -114,6 +161,12 @@ public class AssetService {
         return Response.error("Asset update failed. Check whether the fields are valid.");
     }
 
+    /**
+     * delete asset
+     *
+     * @param  rfidId
+     * @return Response
+     */
     public Response deleteAsset(String rfidId) {
         int result = assetDao.delete(rfidId);
         if (result == 1) {
@@ -123,6 +176,13 @@ public class AssetService {
         }
     }
 
+    /**
+     * generate report
+     *
+     * @param  fieldChoice
+     * @param choiceValue
+     * @return ResponseEntity
+     */
     public ResponseEntity<InputStreamResource> generateReport(String fieldChoice, String choiceValue) {
         try {
             File f = new File("report.txt");
@@ -164,6 +224,12 @@ public class AssetService {
         }
     }
 
+    /**
+     * get location
+     *
+     * @param rfidId
+     * @return String
+     */
     public String getLocation(String rfidId) {
         Asset asset = assetDao.selectByRFIDid(rfidId);
         JSONObject jo = new JSONObject();
@@ -178,6 +244,13 @@ public class AssetService {
         return jo.toString();
     }
 
+    /**
+     * update location
+     *
+     * @param headers
+     * @param newAsset
+     * @return Response
+     */
     public Response updateLocation(Map<String, String> headers, Asset newAsset) {
         Asset asset = assetDao.selectByRFIDid(newAsset.getRfidId());
         if (newAsset.getCity() != null) {
@@ -201,6 +274,12 @@ public class AssetService {
         }
     }
 
+    /**
+     * get user id
+     *
+     * @param headers
+     * @return int
+     */
     private int getUserId(Map<String, String> headers) {
         String token = headers.getOrDefault("token", null);
         if (token == null) return -1;

@@ -13,11 +13,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.SnsClientBuilder;
-//import software.amazon.awssdk.regions.Region;
 
+/**
+ * @Description: sns config
+ * @Author: Xiaojie Li
+ * @Date: 2022/12/9
+ */
 @Configuration
 public class SNSConfig {
 
+    /**
+     * get AmazonSNSClient
+     *
+     * @param
+     * @return AmazonSNSClient
+     */
     @Bean
     @Primary
     public AmazonSNSClient getAmazonSNSClient() {
@@ -26,22 +36,4 @@ public class SNSConfig {
                         new AWSStaticCredentialsProvider(new BasicAWSCredentials("AKIAUIY3GMURU2QTA2TW", "C7I2foQWchKVbN76wsXAEuRAGb6l+QfNnHe33/f7"))
                 ).build();
     }
-//
-//    @Bean
-//    @Primary
-//    public SnsClient getSnsClient() {
-//
-//        AmazonSNSClient amazonSNSClient = getAmazonSNSClient();
-//        amazonSNSClient.createTopic()
-//
-//        SnsClient.builder()
-//                .region(Region.US_EAST_1)
-//                .credentialsProvider(ProfileCredentialsProvider.create())
-//                .build();
-//
-//        return SnsClient.builder().region(Region.US_East_2)
-//                .credentialsProvider(
-//                        new AWSStaticCredentialsProvider(new BasicAWSCredentials("AKIAUIY3GMURU2QTA2TW", "C7I2foQWchKVbN76wsXAEuRAGb6l+QfNnHe33/f7"))
-//                ).build();
-//    }
 }

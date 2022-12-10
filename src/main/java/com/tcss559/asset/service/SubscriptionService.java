@@ -18,6 +18,11 @@ import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.Map;
 
+/**
+ * @Description: subscription service
+ * @Author: Xiaojie Li
+ * @Date: 2022/12/9
+ */
 @Service("SubscriptionService")
 public class SubscriptionService {
 
@@ -27,6 +32,13 @@ public class SubscriptionService {
     @Autowired
     private AmazonSNSClient awsclient;
 
+    /**
+     * subscribe
+     *
+     * @param headers
+     * @param assetId
+     * @return Response
+     */
     public Response subscribe(Map<String, String> headers, int assetId) {
         String token = headers.getOrDefault("token", null);
         if (token == null) return Response.error("Fail to get token");
@@ -53,6 +65,14 @@ public class SubscriptionService {
         }
     }
 
+    /**
+     * publish
+     *
+     * @param userId,
+     * @param assetId
+     * @param message
+     * @return Response
+     */
     public Response publish(int userId, long assetId, String message) {
         try{
             String email = subscriptionDAO.getEmail(userId);
@@ -68,6 +88,12 @@ public class SubscriptionService {
         }
     }
 
+    /**
+     * create Topic
+     *
+     * @param assetId
+     * @return void
+     */
     public void createTopic(long assetId) {
         String arn = awsclient.createTopic(String.format("asset-%s", assetId)).getTopicArn();
         subscriptionDAO.storeArn(assetId, arn);
