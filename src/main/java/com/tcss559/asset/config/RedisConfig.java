@@ -8,8 +8,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @Description: redis config
- * @Author: Guanchen Zhao
- * @Date: 2021/12/8
  */
 @Configuration
 public class RedisConfig {
