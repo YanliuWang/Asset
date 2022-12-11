@@ -46,6 +46,7 @@ public class SubscriptionService {
         String userId = result[result.length - 1];
 
         if (userId == null) return Response.error("Fail to get userId");
+        System.out.println("user id is: " + userId);
         try{
             int isAdded = subscriptionDAO.addNewSubscription(Integer.parseInt(userId), assetId);
             if (isAdded != 1) {

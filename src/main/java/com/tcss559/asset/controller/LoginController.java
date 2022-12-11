@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 /**
  * @author yanliu
  * @create 2022-12-07-6:25 PM
@@ -23,8 +25,8 @@ public class LoginController {
     private LoginService loginService;
 
     @ResponseBody
-    @RequestMapping("/login")
-    public Response login(HttpServletRequest request, HttpServletResponse response, User user) {
+    @RequestMapping(value = "/login", method = POST, produces = "application/json")
+    public Response login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
         return loginService.login(request, response, user);
     }
 
@@ -35,8 +37,8 @@ public class LoginController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/register")
-    public Response register(User user) {
+    @RequestMapping(value = "/register", method = POST)
+    public Response register(@RequestBody User user) {
         return loginService.register(user);
     }
 

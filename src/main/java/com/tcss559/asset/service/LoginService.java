@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -49,9 +50,13 @@ public class LoginService {
         }
 
 
-        String token = "TCSS559" + "-" + userUtil.getRandomSalt(16) + "-" + user.getUserId();
+        String token = "TCSS559" + "-" + userUtil.getRandomSalt(16) + "-" + selectedUser.getUserId();
         redisUtil.set(token, JSONObject.toJSONString(user), 24 * 60 * 60L);
-        response.setHeader("Authorization", token);
+
+        Cookie cookie = new Cookie("token", token);
+        response.addCookie(cookie);
+        response.setHeader("authorization", token);
+        response.setHeader("Access-Control-Expose-Headers", "authorization");
 
         UserResponse userResponse = new UserResponse();
         userResponse.setToken(token);

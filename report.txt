@@ -1,0 +1,14 @@
+Asset Management System Report
+
+The assets satisfying category = OfficeUtility:
+asset id:      6 | asset name:    pen | asset RFID id:    231f123 | category: OfficeUtility | value: $  3.00 | location: Seattle, WA, US
+asset id:      7 | asset name:    pen | asset RFID id:     a0dasd | category: OfficeUtility | value: $  3.00 | location: Chicago, Illinois, US
+asset id:     15 | asset name:   book | asset RFID id:   123r1231 | category: OfficeUtility | value: $ 66.00 | location: Chicago, Illinois, US
+asset id:     22 | asset name: book-testing | asset RFID id:   123das1f | category: OfficeUtility | value: $ 77.00 | location: newCity, Illinois, US
+asset id:     25 | asset name: book-testing | asset RFID id:     1sad12 | category: OfficeUtility | value: $ 32.00 | location: Seattle, WA, US
+asset id:     26 | asset name:     PC | asset RFID id:      asd1c | category: OfficeUtility | value: $ 32.00 | location: Seattle, WA, US
+asset id:     30 | asset name: book-testing | asset RFID id:  123das1f1 | category: OfficeUtility | value: $ 12.00 | location: Alexandria, VA, US
+asset id:     33 | asset name: 837842 | asset RFID id: ruby666666 | category: OfficeUtility | value: $ 45.00 | location: Alexandria, VA, US
+asset id:     34 | asset name:   1233 | asset RFID id:   ruby8888 | category: OfficeUtility | value: $9999.00 | location: Alexandria, VA, US
+
+The asset value sum is $10269.00.
